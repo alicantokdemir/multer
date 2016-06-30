@@ -3,6 +3,7 @@ var makeMiddleware = require('./lib/make-middleware')
 
 var diskStorage = require('./storage/disk')
 var memoryStorage = require('./storage/memory')
+var streamStorage = require('./storage/stream')
 
 function allowAll (req, file, cb) {
   cb(null, true)
@@ -94,3 +95,4 @@ function multer (options) {
 module.exports = multer
 module.exports.diskStorage = diskStorage
 module.exports.memoryStorage = memoryStorage
+module.exports.streamStorage = streamStorage
