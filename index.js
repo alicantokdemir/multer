@@ -8,6 +8,10 @@ function allowAll (req, file, cb) {
   cb(null, true)
 }
 
+function defaultTransformFile (req, file, cb) {
+  return cb(null, file)
+}
+
 function Multer (options) {
   if (options.storage) {
     this.storage = options.storage
@@ -20,6 +24,7 @@ function Multer (options) {
   this.limits = options.limits
   this.preservePath = options.preservePath
   this.fileFilter = options.fileFilter || allowAll
+  this.transformFile = options.transformFile || defaultTransformFile
 }
 
 Multer.prototype._makeMiddleware = function (fields, fileStrategy) {
@@ -49,7 +54,8 @@ Multer.prototype._makeMiddleware = function (fields, fileStrategy) {
       preservePath: this.preservePath,
       storage: this.storage,
       fileFilter: wrappedFileFilter,
-      fileStrategy: fileStrategy
+      fileStrategy: fileStrategy,
+      transformFile: this.transformFile
     }
   }
 
@@ -79,7 +85,8 @@ Multer.prototype.any = function () {
       preservePath: this.preservePath,
       storage: this.storage,
       fileFilter: this.fileFilter,
-      fileStrategy: 'ARRAY'
+      fileStrategy: 'ARRAY',
+      transformFile: this.transformFile
     }
   }
 
